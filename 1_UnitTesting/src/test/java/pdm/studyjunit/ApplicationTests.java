@@ -2,6 +2,8 @@ package pdm.studyjunit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -66,6 +68,34 @@ class ApplicationTests {
 		assertTrue(demoUtils.isGreater(gradeOne, gradeTwo), "This should return true");
 		assertFalse(demoUtils.isGreater(gradeTwo, gradeOne), "This should return false");
 	}
+
+
+	@Test
+	@DisplayName("Array Equals")
+	void testArrayEquals() {
+		String[] stringArray = {"A", "B", "C"};
+		assertArrayEquals(stringArray, demoUtils.getFirstThreeLettersOfAlphabet(),
+			"Arrays should be the same");
+	}
+
+
+	@Test
+	@DisplayName("Iterable equals")
+	void testIterableEquals() {
+		List<String> list = List.of("luv", "2", "code");
+		assertIterableEquals(list, demoUtils.getAcademyInList(),
+			"Expected list should be same as actual list");
+	}
+
+	@Test
+	@DisplayName("Lines Match")
+	void testLinesMatch() {
+		List<String> list = List.of("luv", "2", "code");
+
+		assertLinesMatch(list, demoUtils.getAcademyInList(),
+			"Lines should match");
+	}
+
 
 	// @BeforeAll
 	// static void beforeAll() {
