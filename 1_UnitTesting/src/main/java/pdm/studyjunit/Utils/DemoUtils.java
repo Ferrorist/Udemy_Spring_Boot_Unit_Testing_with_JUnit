@@ -39,4 +39,16 @@ public class DemoUtils {
 		if(n1 > n2)	return true;
 		return false;
 	}
+
+	public String throwException(int a) throws Exception {
+		if(a < 0)	throw new Exception("Value should be greater than or equal to 0");
+
+		return "Value is greater than or equal to 0";
+	}
+
+	public void checkTimeout() throws InterruptedException {
+		System.out.println("I am going to sleep");
+		Thread.sleep(2000);
+		System.out.println("Sleeping over");
+	}
 }
