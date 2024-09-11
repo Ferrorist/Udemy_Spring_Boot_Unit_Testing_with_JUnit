@@ -12,13 +12,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import pdm.studyjunit.Utils.DemoUtils;
 
 @SpringBootTest
 // @DisplayNameGeneration(DisplayNameGenerator.IndicativeSentences.class)
+@TestMethodOrder(MethodOrderer.DisplayName.class)
 class ApplicationTests {
 
 	DemoUtils demoUtils;
@@ -114,6 +117,8 @@ class ApplicationTests {
 		assertTimeoutPreemptively(Duration.ofSeconds(setTime), () -> demoUtils.checkTimeout()
 		,"Method should execute in " + setTime  + " seconds");
 	}
+
+
 
 
 	// @BeforeAll
