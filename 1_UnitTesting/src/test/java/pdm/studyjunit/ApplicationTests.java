@@ -2,6 +2,7 @@ package pdm.studyjunit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
@@ -103,6 +104,15 @@ class ApplicationTests {
 			"Should throw exception");
 		assertDoesNotThrow(() -> demoUtils.throwException(1),
 			"Should not throw exception");
+	}
+
+
+	@Test
+	@DisplayName("Timeout")
+	void testTimeout() {
+		long setTime = 3;
+		assertTimeoutPreemptively(Duration.ofSeconds(setTime), () -> demoUtils.checkTimeout()
+		,"Method should execute in " + setTime  + " seconds");
 	}
 
 
