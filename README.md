@@ -18,3 +18,7 @@
 
 * 2024-09-01
   * Custom Display Name 학습
+
+* 2024-09-11
+  * Throw & Timeout 관련 Assertion 학습
+  * 테스트 메소드 실행 순서 관리 ```@TestMethodOrder``` 학습
