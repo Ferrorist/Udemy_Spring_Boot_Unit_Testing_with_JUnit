@@ -96,6 +96,15 @@ class ApplicationTests {
 			"Lines should match");
 	}
 
+	@Test
+	@DisplayName("Throws and Does Not Throw")
+	void testThrowsAndDoesNotThrow() {
+		assertThrows(Exception.class, () -> demoUtils.throwException(-1) ,
+			"Should throw exception");
+		assertDoesNotThrow(() -> demoUtils.throwException(1),
+			"Should not throw exception");
+	}
+
 
 	// @BeforeAll
 	// static void beforeAll() {
