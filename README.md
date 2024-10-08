@@ -29,4 +29,5 @@
   * 조건부 테스트 방법 학습 (JUnit)
 
 * 2024-10-08
-  * TDD(Test-Driven Development) 학습
+  * TDD(Test-Driven Development) 복습 및 실습
+  * ```@ParameterizedTest``` 학습
