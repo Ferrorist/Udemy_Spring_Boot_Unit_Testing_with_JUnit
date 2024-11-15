@@ -31,3 +31,8 @@
 * 2024-10-08
   * TDD(Test-Driven Development) 복습 및 실습
   * ```@ParameterizedTest``` 학습
+
+* 2024-11-15
+  * ```assertAll()``` 학습
+  * Spring Boot의 ```@Autowired```에 대해 간략히 학습
+  * Test Double에 대한 학습
