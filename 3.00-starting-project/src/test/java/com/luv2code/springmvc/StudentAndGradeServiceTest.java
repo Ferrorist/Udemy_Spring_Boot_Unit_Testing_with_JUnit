@@ -3,6 +3,8 @@ package com.luv2code.springmvc;
 import com.luv2code.springmvc.models.CollegeStudent;
 import com.luv2code.springmvc.repository.StudentDao;
 import com.luv2code.springmvc.service.StudentAndGradeService;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 
 // 테스트 시 사용할 properties 설정 가능
 @TestPropertySource("/application.properties")
@@ -58,6 +61,20 @@ public class StudentAndGradeServiceTest {
 
         deletedCollegeStudent = studentDao.findById(1);
         Assertions.assertFalse(deletedCollegeStudent.isPresent(), "Return false");
+    }
+
+    @Sql("/insertData.sql") // BeforeEach가 먼저 실행되고 이후 @Sql이 실행됨.
+    @Test
+    public void getGradebookService() {
+        Iterable<CollegeStudent> iterableCollegeStudents = studentService.getGradebook();
+
+        List<CollegeStudent> collegeStudents = new ArrayList<>();
+
+        for (CollegeStudent collegeStudent : iterableCollegeStudents) {
+            collegeStudents.add(collegeStudent);
+        }
+
+        Assertions.assertEquals(6, collegeStudents.size());
     }
 
     @AfterEach
