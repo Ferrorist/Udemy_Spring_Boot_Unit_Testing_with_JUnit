@@ -1,6 +1,8 @@
 package com.luv2code.springmvc;
 
 import com.luv2code.springmvc.models.CollegeStudent;
+import com.luv2code.springmvc.models.MathGrade;
+import com.luv2code.springmvc.repository.MathGradesDao;
 import com.luv2code.springmvc.repository.StudentDao;
 import com.luv2code.springmvc.service.StudentAndGradeService;
 import java.util.ArrayList;
@@ -30,6 +32,9 @@ public class StudentAndGradeServiceTest {
 
     @Autowired
     private StudentDao studentDao;
+
+    @Autowired
+    private MathGradesDao mathGradeDao;
 
     @Test
     public void createStudentService() {
@@ -75,6 +80,19 @@ public class StudentAndGradeServiceTest {
         }
 
         Assertions.assertEquals(6, collegeStudents.size());
+    }
+
+    @Test
+    public void createGradeService() {
+
+        //Create the grade
+        Assertions.assertTrue(studentService.createGrade(80.50, 1, "math"));
+
+        // Get all grades with studentId
+        Iterable<MathGrade> mathGrades = mathGradeDao.findGradeByStudentId(1);
+
+        // Verify there is grades
+        Assertions.assertTrue(mathGrades.iterator().hasNext(), "Student has math grades");
     }
 
     @AfterEach
