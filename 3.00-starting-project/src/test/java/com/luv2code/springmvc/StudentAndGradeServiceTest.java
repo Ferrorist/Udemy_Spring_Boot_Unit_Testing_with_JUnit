@@ -1,8 +1,12 @@
 package com.luv2code.springmvc;
 
 import com.luv2code.springmvc.models.CollegeStudent;
+import com.luv2code.springmvc.models.HistoryGrade;
 import com.luv2code.springmvc.models.MathGrade;
+import com.luv2code.springmvc.models.ScienceGrade;
+import com.luv2code.springmvc.repository.HistoryGradesDao;
 import com.luv2code.springmvc.repository.MathGradesDao;
+import com.luv2code.springmvc.repository.ScienceGradesDao;
 import com.luv2code.springmvc.repository.StudentDao;
 import com.luv2code.springmvc.service.StudentAndGradeService;
 import java.util.ArrayList;
@@ -13,6 +17,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,6 +40,12 @@ public class StudentAndGradeServiceTest {
 
     @Autowired
     private MathGradesDao mathGradeDao;
+
+    @Autowired
+    private ScienceGradesDao scienceGradeDao;
+
+    @Autowired
+    private HistoryGradesDao historyGradeDao;
 
     @Test
     public void createStudentService() {
@@ -87,12 +98,29 @@ public class StudentAndGradeServiceTest {
 
         //Create the grade
         Assertions.assertTrue(studentService.createGrade(80.50, 1, "math"));
+        Assertions.assertTrue(studentService.createGrade(80.50, 1, "science"));
+        Assertions.assertTrue(studentService.createGrade(80.50, 1, "history"));
 
         // Get all grades with studentId
         Iterable<MathGrade> mathGrades = mathGradeDao.findGradeByStudentId(1);
+        Iterable<ScienceGrade> scienceGrades = scienceGradeDao.findGradeByStudentId(1);
+        Iterable<HistoryGrade> historyGrades = historyGradeDao.findGradeByStudentId(1);
+
 
         // Verify there is grades
         Assertions.assertTrue(mathGrades.iterator().hasNext(), "Student has math grades");
+        Assertions.assertTrue(scienceGrades.iterator().hasNext(), "Student has science grades");
+        Assertions.assertTrue(historyGrades.iterator().hasNext(), "Student has history grades");
+    }
+
+    @Test
+    public void createGradeServiceReturnFalse() {
+        Assertions.assertFalse(studentService.createGrade(105, 1, "math"));
+        Assertions.assertFalse(studentService.createGrade(-5, 1, "math"));
+
+        Assertions.assertFalse(studentService.createGrade(80.50, 2, "math"));
+
+        Assertions.assertFalse(studentService.createGrade(80.50, 1, "literature"));
     }
 
     @AfterEach
