@@ -23,6 +23,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 // 테스트 시 사용할 properties 설정 가능
 @TestPropertySource("/application.properties")
 @SpringBootTest
@@ -57,8 +60,8 @@ public class StudentAndGradeServiceTest {
 
     @Test
     public void isStudentNullCheck() {
-        Assertions.assertTrue(studentService.checkIfStudentIsNull(1));
-        Assertions.assertFalse(studentService.checkIfStudentIsNull(0));
+        assertTrue(studentService.checkIfStudentIsNull(1));
+        assertFalse(studentService.checkIfStudentIsNull(0));
     }
 
     @BeforeEach
@@ -73,12 +76,27 @@ public class StudentAndGradeServiceTest {
     @Test
     public void deleteStudentService() {
         Optional<CollegeStudent> deletedCollegeStudent = studentDao.findById(1);
-        Assertions.assertTrue(deletedCollegeStudent.isPresent(), "Return True");
+        Optional<MathGrade> deletedMathGrade = mathGradeDao.findById(1);
+        Optional<HistoryGrade> deletedHistoryGrade = historyGradeDao.findById(1);
+        Optional<ScienceGrade> deletedScienceGrade = scienceGradeDao.findById(1);
+
+        assertTrue(deletedCollegeStudent.isPresent(), "Return True");
+        assertTrue(deletedMathGrade.isPresent());
+        assertTrue(deletedHistoryGrade.isPresent());
+        assertTrue(deletedScienceGrade.isPresent());
+
 
         studentService.deleteStudent(1);
 
         deletedCollegeStudent = studentDao.findById(1);
-        Assertions.assertFalse(deletedCollegeStudent.isPresent(), "Return false");
+        deletedMathGrade = mathGradeDao.findById(1);
+        deletedScienceGrade = scienceGradeDao.findById(1);
+        deletedHistoryGrade = historyGradeDao.findById(1);
+
+        assertFalse(deletedCollegeStudent.isPresent(), "Return false");
+        assertFalse(deletedMathGrade.isPresent());
+        assertFalse(deletedHistoryGrade.isPresent());
+        assertFalse(deletedScienceGrade.isPresent());
     }
 
     @Sql("/insertData.sql") // BeforeEach가 먼저 실행되고 이후 @Sql이 실행됨.
@@ -99,9 +117,9 @@ public class StudentAndGradeServiceTest {
     public void createGradeService() {
 
         //Create the grade
-        Assertions.assertTrue(studentService.createGrade(80.50, 1, "math"));
-        Assertions.assertTrue(studentService.createGrade(80.50, 1, "science"));
-        Assertions.assertTrue(studentService.createGrade(80.50, 1, "history"));
+        assertTrue(studentService.createGrade(80.50, 1, "math"));
+        assertTrue(studentService.createGrade(80.50, 1, "science"));
+        assertTrue(studentService.createGrade(80.50, 1, "history"));
 
         // Get all grades with studentId
         Iterable<MathGrade> mathGrades = mathGradeDao.findGradeByStudentId(1);
@@ -110,23 +128,23 @@ public class StudentAndGradeServiceTest {
 
 
         // Verify there is grades
-        Assertions.assertTrue(mathGrades.iterator().hasNext(), "Student has math grades");
-        Assertions.assertTrue(scienceGrades.iterator().hasNext(), "Student has science grades");
-        Assertions.assertTrue(historyGrades.iterator().hasNext(), "Student has history grades");
+        assertTrue(mathGrades.iterator().hasNext(), "Student has math grades");
+        assertTrue(scienceGrades.iterator().hasNext(), "Student has science grades");
+        assertTrue(historyGrades.iterator().hasNext(), "Student has history grades");
 
-        Assertions.assertTrue(((Collection<MathGrade>) mathGrades).size() == 2, "Student has math grades");
-        Assertions.assertTrue(((Collection<ScienceGrade>) scienceGrades).size() == 2);
-        Assertions.assertTrue(((Collection<HistoryGrade>) historyGrades).size() == 2);
+        assertTrue(((Collection<MathGrade>) mathGrades).size() == 2, "Student has math grades");
+        assertTrue(((Collection<ScienceGrade>) scienceGrades).size() == 2);
+        assertTrue(((Collection<HistoryGrade>) historyGrades).size() == 2);
     }
 
     @Test
     public void createGradeServiceReturnFalse() {
-        Assertions.assertFalse(studentService.createGrade(105, 1, "math"));
-        Assertions.assertFalse(studentService.createGrade(-5, 1, "math"));
+        assertFalse(studentService.createGrade(105, 1, "math"));
+        assertFalse(studentService.createGrade(-5, 1, "math"));
 
-        Assertions.assertFalse(studentService.createGrade(80.50, 2, "math"));
+        assertFalse(studentService.createGrade(80.50, 2, "math"));
 
-        Assertions.assertFalse(studentService.createGrade(80.50, 1, "literature"));
+        assertFalse(studentService.createGrade(80.50, 1, "literature"));
     }
 
     @Test
