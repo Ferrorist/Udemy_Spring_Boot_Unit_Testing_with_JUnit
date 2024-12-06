@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
@@ -53,6 +54,32 @@ public class StudentAndGradeServiceTest {
     @Autowired
     private HistoryGradesDao historyGradeDao;
 
+    @Value("${sql.scripts.create.student}")
+    private String sqlAddStudent;
+
+    @Value("${sql.scripts.create.math.grade}")
+    private String sqlAddMathGrade;
+
+    @Value("${sql.scripts.create.science.grade}")
+    private String sqlAddScienceGrade;
+
+    @Value("${sql.scripts.create.history.grade}")
+    private String sqlAddHistoryGrade;
+
+    @Value("${sql.scripts.delete.student}")
+    private String sqlDeleteStudent;
+
+    @Value("${sql.scripts.delete.math.grade}")
+    private String sqlDeleteMathGrade;
+
+    @Value("${sql.scripts.delete.science.grade}")
+    private String sqlDeleteScienceGrade;
+
+    @Value("${sql.scripts.delete.history.grade}")
+    private String sqlDeleteHistoryGrade;
+
+
+
     @Test
     public void createStudentService() {
         studentService.createStudent("Chad", "Darby", "chad.darby@luv2code_school.com");
@@ -70,11 +97,10 @@ public class StudentAndGradeServiceTest {
 
     @BeforeEach
     public void setUpDatabase() {
-        jdbc.execute(
-                "insert into student(id, firstname, lastname, email_address) values (1, 'Eric', 'Roby', 'eric.roby@luv2code_school.com')");
-        jdbc.execute("insert into math_grade(id, student_id, grade) values (1, 1, 100.00)");
-        jdbc.execute("insert into science_grade(id, student_id, grade) values (1, 1, 100.00)");
-        jdbc.execute("insert into history_grade(id, student_id, grade) values (1, 1, 100.00)");
+        jdbc.execute(sqlAddStudent);
+        jdbc.execute(sqlAddMathGrade);
+        jdbc.execute(sqlAddScienceGrade);
+        jdbc.execute(sqlAddHistoryGrade);
     }
 
     @Test
@@ -190,9 +216,9 @@ public class StudentAndGradeServiceTest {
 
     @AfterEach
     public void setupAfterTransaction() {
-        jdbc.execute("delete from student");
-        jdbc.execute("delete from math_grade");
-        jdbc.execute("delete from science_grade");
-        jdbc.execute("delete from history_grade");
+        jdbc.execute(sqlDeleteStudent);
+        jdbc.execute(sqlDeleteMathGrade);
+        jdbc.execute(sqlDeleteScienceGrade);
+        jdbc.execute(sqlDeleteHistoryGrade);
     }
 }
